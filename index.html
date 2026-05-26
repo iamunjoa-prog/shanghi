@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shanghai Trip Planner</title>
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --card: rgba(255,255,255,0.82);
+      --text: #1d1d1f;
+      --muted: #6e6e73;
+      --line: rgba(0,0,0,0.08);
+      --accent: #0071e3;
+      --food: #b5473f;
+      --cafe: #8b6f47;
+      --history: #275d49;
+      --kids: #5f7f3f;
+      --shadow: 0 20px 60px rgba(0,0,0,0.08);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      background: radial-gradient(circle at top left, #fff 0, var(--bg) 38%, #ececf1 100%);
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 72vh;
+      display: grid;
+      place-items: center;
+      padding: 56px 22px 36px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 520px; height: 520px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(0,113,227,.18), rgba(181,71,63,.12));
+      filter: blur(28px);
+      top: -160px; right: -180px;
+    }
+    .hero-inner { max-width: 980px; position: relative; z-index: 1; }
+    .eyebrow {
+      display: inline-flex; gap: 8px; align-items: center;
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.65);
+      backdrop-filter: blur(18px);
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 22px;
+    }
+    h1 {
+      font-size: clamp(48px, 9vw, 116px);
+      line-height: .92; margin: 0;
+      font-weight: 800; letter-spacing: -0.07em;
+    }
+    .subtitle {
+      max-width: 760px; margin: 28px auto 0;
+      font-size: clamp(18px, 2.5vw, 28px);
+      line-height: 1.35; color: var(--muted); font-weight: 520;
+    }
+
+    /* ── Sticky nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 30;
+      backdrop-filter: blur(20px);
+      background: rgba(245,245,247,.78);
+      border-bottom: 1px solid var(--line);
+      overflow-x: auto; white-space: nowrap;
+      padding: 10px 16px; display: flex; gap: 8px;
+    }
+    .nav::-webkit-scrollbar { display: none; }
+    .nav a {
+      font-size: 14px; color: var(--muted);
+      padding: 9px 13px; border-radius: 999px; transition: .2s;
+      flex-shrink: 0;
+    }
+    .nav a:hover { background: rgba(0,0,0,.05); color: var(--text); }
+
+    /* ── Sections ── */
+    main { max-width: 1100px; margin: 0 auto; padding: 0 16px 80px; }
+
+    .section-title {
+      font-size: clamp(26px, 4vw, 40px);
+      font-weight: 800; letter-spacing: -0.05em;
+      margin: 60px 0 8px;
+    }
+    .section-sub { color: var(--muted); margin: 0 0 24px; font-size: 15px; }
+
+    /* ── Apps grid ── */
+    .app-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px; margin-bottom: 20px;
+    }
+    .app-card {
+      background: var(--card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px 18px 14px;
+      box-shadow: var(--shadow);
+    }
+    .app-icon { font-size: 28px; margin-bottom: 8px; }
+    .app-card h3 { margin: 0 0 6px; font-size: 15px; font-weight: 700; }
+    .app-card p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.45; }
+
+    /* ── Day section ── */
+    .day {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 32px;
+      padding: 60px 0 0;
+    }
+    @media (max-width: 640px) {
+      .day { grid-template-columns: 1fr; gap: 16px; padding: 48px 0 0; }
+    }
+
+    .day-head { position: sticky; top: 55px; align-self: start; }
+    @media (max-width: 640px) { .day-head { position: static; } }
+
+    .date {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .day-head h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800; letter-spacing: -0.05em;
+      margin: 0 0 10px; white-space: pre-line;
+    }
+    .day-head p { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.5; }
+
+    /* ── Timeline ── */
+    .timeline { display: flex; flex-direction: column; gap: 14px; }
+    .timeline-item { display: flex; gap: 16px; align-items: flex-start; }
+    .time {
+      flex-shrink: 0; width: 52px;
+      font-size: 12px; font-weight: 700;
+      color: var(--muted); text-align: right;
+      padding-top: 18px; letter-spacing: 0.02em;
+    }
+
+    /* ── Card ── */
+    .card {
+      flex: 1;
+      background: var(--card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+    }
+    .card h3 { margin: 6px 0 8px; font-size: 17px; font-weight: 700; }
+    .card p { margin: 0 0 12px; font-size: 14px; color: var(--muted); line-height: 1.55; }
+    .card ul {
+      margin: 8px 0 0; padding: 0;
+      list-style: none; display: flex; flex-direction: column; gap: 4px;
+    }
+    .card ul li {
+      font-size: 14px; color: var(--text);
+      padding: 6px 10px;
+      background: rgba(0,0,0,.04);
+      border-radius: 8px;
+    }
+    .card ul li::before { content: "→ "; color: var(--muted); }
+
+    /* ── Label badge ── */
+    .label {
+      display: inline-block;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 999px;
+      background: rgba(0,0,0,.06); color: var(--muted);
+    }
+    .label.food   { background: rgba(181,71,63,.12);  color: var(--food); }
+    .label.cafe   { background: rgba(139,111,71,.12); color: var(--cafe); }
+    .label.history{ background: rgba(39,93,73,.12);   color: var(--history); }
+    .label.kids   { background: rgba(95,127,63,.12);  color: var(--kids); }
+
+    /* ── Option grid ── */
+    .option-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    .option {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 12px;
+      padding: 12px 14px;
+      background: rgba(0,0,0,.03);
+      border-radius: 16px;
+      border: 1px solid var(--line);
+    }
+    .option-info { flex: 1; }
+    .option-info strong { font-size: 14px; font-weight: 700; display: block; margin-bottom: 3px; }
+    .option-info .opt-desc { font-size: 13px; color: var(--muted); line-height: 1.45; }
+    .option-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+    .meta-tag {
+      font-size: 11px; padding: 2px 8px;
+      border-radius: 999px; border: 1px solid var(--line);
+      color: var(--muted); white-space: nowrap;
+    }
+    .meta-tag.kids-ok { border-color: rgba(95,127,63,.3); color: var(--kids); background: rgba(95,127,63,.07); }
+    .meta-tag.waiting { border-color: rgba(181,71,63,.25); color: var(--food); background: rgba(181,71,63,.06); }
+
+    /* ── Buttons ── */
+    .buttons { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 4px; flex-shrink: 0; }
+    .btn {
+      display: inline-block;
+      font-size: 12px; font-weight: 600;
+      padding: 7px 13px; border-radius: 999px;
+      background: var(--accent); color: #fff;
+      white-space: nowrap; transition: .18s;
+    }
+    .btn:hover { opacity: .85; }
+    .btn.light {
+      background: rgba(0,0,0,.07); color: var(--text);
+    }
+    .btn.dianping {
+      background: rgba(181,71,63,.12); color: var(--food);
+    }
+
+    /* ── Grid layout ── */
+    .grid { display: grid; gap: 16px; }
+    .grid.two { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+
+    /* ── Edit guide ── */
+    .edit-guide { margin-top: 60px; }
+    .edit-guide .card code {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 12px; background: rgba(0,0,0,.06);
+      padding: 2px 6px; border-radius: 6px;
+    }
+    .edit-guide .card ul { list-style: disc; padding-left: 18px; }
+    .edit-guide .card ul li {
+      background: none; padding: 2px 0;
+      font-size: 14px; color: var(--muted);
+    }
+    .edit-guide .card ul li::before { content: none; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 13px; color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow" id="hero-eyebrow">✈️ Loading…</div>
+    <h1 id="hero-title"></h1>
+    <p class="subtitle" id="hero-subtitle"></p>
+  </div>
+</div>
+
+<nav class="nav" id="main-nav"></nav>
+
+<main>
+  <!-- 필수 앱 -->
+  <section id="apps">
+    <h2 class="section-title">출국 전 필수앱</h2>
+    <p class="section-sub">입국 전 미리 설치 & 설정 완료 권장.</p>
+    <div class="app-list" id="apps-grid"></div>
+  </section>
+
+  <!-- Day 섹션들 (JS로 주입) -->
+  <div id="days-container"></div>
+
+  <!-- 편집 가이드 -->
+  <section class="edit-guide" id="edit">
+    <h2 class="section-title">장소 추가하는 법</h2>
+    <div class="grid two">
+      <div class="card">
+        <span class="label">Easy Edit</span>
+        <h3>data.js 파일만 수정</h3>
+        <p>장소를 추가할 땐 <code>data.js</code>의 해당 Day <code>items</code> 배열에 객체 하나 추가하면 끝. HTML은 건드릴 필요 없음.</p>
+        <ul>
+          <li>식당/카페 후보 추가 → <code>options</code> 배열에 객체 추가</li>
+          <li>새 장소 카드 → <code>items</code>에 새 항목 추가</li>
+          <li>링크 추가 → <code>links</code> 배열에 <code>{ label, url }</code> 추가</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="label">GitHub Pages</span>
+        <h3>두 파일만 올리면 끝</h3>
+        <p><code>index.html</code> + <code>data.js</code> 을 같은 폴더에 두고 GitHub에 업로드.</p>
+        <ul>
+          <li>Settings → Pages → Deploy from branch</li>
+          <li>친구에게 URL 공유 가능</li>
+          <li>장소 추가 후 <code>data.js</code>만 다시 올리면 반영</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="footer"></footer>
+
+<!-- data.js 먼저 로드, 그 다음 렌더링 스크립트 -->
+<script src="data.js"></script>
+<script>
+// ============================================================
+//  렌더링 엔진 — 이 아래는 수정할 필요 없습니다
+// ============================================================
+
+// ── 유틸 ──
+function el(tag, cls, html) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (html !== undefined) e.innerHTML = html;
+  return e;
+}
+
+function labelClass(type) {
+  const map = { food: "food", cafe: "cafe", history: "history", kids: "kids" };
+  return map[type] || "";
+}
+
+function makeBtns(links) {
+  if (!links || !links.length) return "";
+  return `<div class="buttons">${links.map(l =>
+    `<a class="btn ${l.style || ""}" href="${l.url}" target="_blank">${l.label}</a>`
+  ).join("")}</div>`;
+}
+
+function makeOption(opt) {
+  const metaTags = [
+    opt.kidsOk ? `<span class="meta-tag kids-ok">👶 아이 가능</span>` : "",
+    opt.waiting ? `<span class="meta-tag waiting">⏱ 웨이팅: ${opt.waiting}</span>` : "",
+  ].join("");
+
+  const btns = [
+    opt.mapUrl ? `<a class="btn light" href="${opt.mapUrl}" target="_blank">🗺 지도</a>` : "",
+    opt.dianpingUrl ? `<a class="btn dianping" href="${opt.dianpingUrl}" target="_blank">大众 Dianping</a>` : "",
+  ].join("");
+
+  return `
+    <div class="option">
+      <div class="option-info">
+        <strong>${opt.name}</strong>
+        <span class="opt-desc">${opt.desc || ""}</span>
+        ${metaTags ? `<div class="option-meta">${metaTags}</div>` : ""}
+      </div>
+      ${btns ? `<div class="buttons">${btns}</div>` : ""}
+    </div>`;
+}
+
+function makeCard(item) {
+  const lc = labelClass(item.type);
+  let body = "";
+
+  if (item.desc) body += `<p>${item.desc}</p>`;
+  if (item.bulletList) {
+    body += `<ul>${item.bulletList.map(b => `<li>${b}</li>`).join("")}</ul>`;
+  }
+  if (item.options && item.options.length) {
+    body += `<div class="option-grid">${item.options.map(makeOption).join("")}</div>`;
+  }
+  if (item.links && item.links.length) {
+    body += makeBtns(item.links);
+  }
+
+  return `
+    <div class="card">
+      <span class="label ${lc}">${item.label || ""}</span>
+      <h3>${item.title}</h3>
+      ${body}
+    </div>`;
+}
+
+// ── Hero ──
+document.getElementById("hero-eyebrow").textContent =
+  `✈️ ${TRIP_META.hotel} · ${TRIP_META.tagline}`;
+document.getElementById("hero-title").textContent = TRIP_META.title;
+document.getElementById("hero-subtitle").textContent = TRIP_META.subtitle;
+
+// ── Nav ──
+const nav = document.getElementById("main-nav");
+const navLinks = [
+  { href: "#apps", label: "필수앱" },
+  ...DAYS.map(d => ({ href: `#${d.id}`, label: d.dayLabel.split(" · ")[0] })),
+  { href: "#edit", label: "편집방법" },
+];
+navLinks.forEach(l => {
+  const a = document.createElement("a");
+  a.href = l.href; a.textContent = l.label;
+  nav.appendChild(a);
+});
+
+// ── Apps ──
+const appsGrid = document.getElementById("apps-grid");
+APPS.forEach(app => {
+  appsGrid.innerHTML += `
+    <div class="app-card">
+      <div class="app-icon">${app.icon}</div>
+      <h3>${app.name}</h3>
+      <p>${app.desc}</p>
+    </div>`;
+});
+
+// ── Days ──
+const daysContainer = document.getElementById("days-container");
+DAYS.forEach(day => {
+  const section = document.createElement("section");
+  section.className = "day";
+  section.id = day.id;
+
+  // Left: day head
+  const aside = el("aside", "day-head", `
+    <div class="date">${day.dayLabel}</div>
+    <h2>${day.title}</h2>
+    <p>${day.subtitle}</p>
+  `);
+
+  // Right: timeline
+  const timeline = el("div", "timeline");
+  day.items.forEach(item => {
+    const row = el("div", "timeline-item", `
+      <div class="time">${item.time}</div>
+      ${makeCard(item)}
+    `);
+    timeline.appendChild(row);
+  });
+
+  section.appendChild(aside);
+  section.appendChild(timeline);
+  daysContainer.appendChild(section);
+});
+
+// ── Footer ──
+document.getElementById("footer").textContent =
+  `Made for Shanghai 2026 · index.html + data.js 두 파일 구조 · 장소 추가는 data.js만 수정`;
+</script>
+</body>
+</html>
