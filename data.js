@@ -2,35 +2,16 @@
 //  상해 여행 데이터 파일
 //  장소/식당/카페 추가할 때 이 파일만 수정하면 됩니다.
 //
-//  📌 장소 추가 방법:
-//  해당 day의 items 배열 안에 아래 형식으로 객체 추가:
-//
-//  {
-//    time: "오전",
-//    type: "food",          // food | cafe | history | kids | default
-//    label: "Dinner",
-//    title: "카드 제목",
-//    desc: "설명",
-//    options: [
-//      {
-//        name: "식당명",
-//        desc: "설명",
-//        price: "25위안",          // 선택
-//        mapUrl: "고덕지도 URL",
-//        dianpingUrl: "...",       // 선택
-//        kidsOk: true,             // 선택
-//        waiting: "보통",          // 선택
-//        review: "실후기 요약",    // 선택 - 직접 가본 후기
-//      }
-//    ],
-//    links: [
-//      { label: "지도", url: "https://..." },
-//    ]
-//  }
-//
-//  🗺 고덕지도 링크 형식:
-//  https://uri.amap.com/search?keyword=중국어검색어&city=上海
-//  모바일에서 고덕지도 앱으로 자동 연결됨
+//  📌 필드 설명:
+//  name      : 식당명 (한국어 + 중국어)
+//  desc      : 한줄 설명
+//  menu      : 추천 메뉴 배열 — ["메뉴1", "메뉴2"]
+//  price     : 대략적인 가격대
+//  mapUrl    : 고덕지도 딥링크 (uri.amap.com)
+//  dianpingUrl: 다이안핑 링크 (선택)
+//  kidsOk    : true면 아이 가능 배지 표시
+//  waiting   : 웨이팅 예상 텍스트
+//  review    : 직접 다녀온 후기 (이탤릭 표시)
 // ============================================================
 
 const TRIP_META = {
@@ -76,7 +57,8 @@ const DAYS = [
         options: [
           {
             name: "홍쿠이지아 红盔甲",
-            desc: "마늘 롱샤. 상해 온 느낌 확실. 부모 만족도 높지만 껍질 까기 노동 있음.",
+            desc: "마늘 가재 전문점. 상해에 왔다는 느낌이 가장 강한 집.",
+            menu: ["마늘 롱샤 (蒜蓉龙虾)", "볶음 가재 (麻辣小龙虾)", "마늘 새우"],
             mapUrl: "https://uri.amap.com/search?keyword=红盔甲&city=上海",
             dianpingUrl: "https://www.dianping.com/search/keyword/2/0/%E7%BA%A2%E7%9B%94%E5%AE%B6",
             kidsOk: true,
@@ -84,14 +66,16 @@ const DAYS = [
           },
           {
             name: "Ye Shanghai 夜上海",
-            desc: "깔끔한 상해식. 첫날 안정픽, 아이 동반 난이도 낮음.",
+            desc: "정통 상해 가정식 코스. 깔끔하고 여러 요리를 골고루 맛볼 수 있음.",
+            menu: ["홍소육 (红烧肉)", "취하게 찐 게 (醉蟹)", "상해식 볶음 우동"],
             mapUrl: "https://uri.amap.com/search?keyword=夜上海餐厅&city=上海",
             kidsOk: true,
             waiting: "보통",
           },
           {
             name: "산동잡곡전병 山东杂粮煎饼",
-            desc: "길거리 간식. 아이들이 좋아할 확률 높고 부담 없는 로컬 선택.",
+            desc: "길거리 크레이프 스타일 전병. 달걀·채소·소스를 넣고 바로 구워줌.",
+            menu: ["잡곡 전병 (杂粮煎饼)", "계란 추가 전병", "소시지 전병"],
             mapUrl: "https://uri.amap.com/search?keyword=山东杂粮煎饼&city=上海",
             kidsOk: true,
             waiting: "짧음",
@@ -99,7 +83,8 @@ const DAYS = [
           },
           {
             name: "Yang's Fried Dumpling 小杨生煎",
-            desc: "생전병 간식/야식. 바삭한 군만두, 아이들이 좋아할 확률 높음.",
+            desc: "상해식 군만두 전문점. 아래는 바삭, 속에 육즙 가득.",
+            menu: ["생전병 (生煎包)", "새우 생전병", "탕면"],
             mapUrl: "https://uri.amap.com/search?keyword=小杨生煎&city=上海",
             kidsOk: true,
             waiting: "짧음",
@@ -114,15 +99,17 @@ const DAYS = [
         desc: "백아절현 꼭 드세요. 핫/아이스 둘 다 맛있음. 밀크티 들고 와이탄 산책. 컨디션 좋으면 황푸강 유람선.",
         options: [
           {
-            name: "CHAGEE 霸王茶姬 — 백아절현 추천",
-            desc: "상해 어디서든 보이는 패왕차희. 백아절현은 꼭 주문. 핫/아이스 둘 다 맛있음 ♥",
+            name: "CHAGEE 霸王茶姬",
+            desc: "중국 전역에서 보이는 밀크티 브랜드. 상하이 어디서든 심심찮게 볼 수 있음.",
+            menu: ["백아절현 (白芽绝炫) ★강추", "고산운무 (高山云雾)", "원기 우롱"],
             mapUrl: "https://uri.amap.com/search?keyword=霸王茶姬&city=上海",
             kidsOk: true,
-            review: "상하이 어디서든 심심찮게 보임. 백아절현 강추",
+            review: "백아절현은 꼭 주문. 핫/아이스 둘 다 맛있음 ♥",
           },
           {
-            name: "HEYTEA 喜茶 — 포도 밀크폼",
-            desc: "포도음료+밀크폼 16위안. 헤이티 간판 메뉴. 상하이에서 쉽게 보이는 브랜드.",
+            name: "HEYTEA 喜茶",
+            desc: "헤이티 간판 메뉴인 포도 음료. 밀크폼이 기본으로 들어가 달콤하고 고소함.",
+            menu: ["포도 밀크폼 (葡萄多肉) ★", "딸기 밀크티", "치즈 그린티"],
             price: "16위안~",
             mapUrl: "https://uri.amap.com/search?keyword=喜茶&city=上海",
             kidsOk: true,
@@ -163,7 +150,8 @@ const DAYS = [
         options: [
           {
             name: "헌지우이치엔 很久以前",
-            desc: "양꼬치보다 닭똥집·연골·오돌뼈 목적. 인기 많아 지점 선택 중요.",
+            desc: "양꼬치 전문점이지만 닭똥집·연골·오돌뼈가 진짜 목적. 숯불 구이 분위기.",
+            menu: ["닭똥집 꼬치 (鸡胗串) ★", "양 연골 (羊软骨)", "오돌뼈 꼬치", "양고기 꼬치"],
             mapUrl: "https://uri.amap.com/search?keyword=很久以前羊肉串&city=上海",
             dianpingUrl: "https://www.dianping.com/search/keyword/2/0/%E5%BE%88%E4%B9%85%E4%BB%A5%E5%89%8D",
             waiting: "길 수 있음",
@@ -171,20 +159,23 @@ const DAYS = [
           },
           {
             name: "파기름국수집 大时代美食面馆",
-            desc: "파기름 비빔국수. 먹킷리스트 추천 픽. 로컬 감성 가득한 면요리.",
+            desc: "파기름으로 볶은 비빔국수 전문점. 심플하지만 중독적인 로컬 면요리.",
+            menu: ["파기름 비빔국수 (葱油拌面) ★", "게살 비빔국수", "완탕면"],
             mapUrl: "https://uri.amap.com/search?keyword=大时代美食面馆&city=上海",
-            dianpingUrl: "https://www.dianping.com/search/keyword/2/0/%E5%A4%A7%E6%97%B6%E4%BB%A3%E7%BE%8E%E9%A3%9F%E9%9D%A2%E9%A6%86",
+            dianpingUrl: "https://www.dianping.com/search/keyword/2/0/%E5%A4%A7%E6%97%B6%E4%BB%A3%E7%BE%8A%E9%A3%9F%E9%9D%A2%E9%A6%86",
             review: "먹킷리스트 추천 픽",
           },
           {
             name: "장씨네게살국수 张氏蟹粉面",
-            desc: "상해식 게살 비빔국수. 먹킷리스트 추천. 가을 외엔 냉동 게살이지만 맛은 있음.",
+            desc: "상해식 게살을 듬뿍 올린 비빔국수. 가을이 아니면 냉동 게살이지만 맛은 있음.",
+            menu: ["게살 비빔국수 (蟹粉拌面) ★", "게살 탕면", "게살 볶음밥"],
             mapUrl: "https://uri.amap.com/search?keyword=张氏蟹粉面&city=上海",
             review: "먹킷리스트 추천 픽",
           },
           {
             name: "점도덕 点都德",
-            desc: "아이 편한 딤섬. 홍미창펀·오이무침. 지점 동선 맞으면 강추.",
+            desc: "광동식 딤섬 전문점. 메뉴가 다양하고 아이들이 좋아하는 메뉴가 많음.",
+            menu: ["새우 창펀 (虾肠粉) ★", "홍미 창펀 (红米肠粉)", "하가우 (虾饺)", "오이 무침", "에그타르트"],
             mapUrl: "https://uri.amap.com/search?keyword=点都德&city=上海",
             dianpingUrl: "https://www.dianping.com/search/keyword/2/0/%E7%82%B9%E5%BA%A6%E5%BE%B7",
             kidsOk: true,
@@ -213,34 +204,39 @@ const DAYS = [
         options: [
           {
             name: "AMAM LONBAKERY",
-            desc: "British Black Gold Sesame Viennese 23위안. 빵 맛있고 음료는 평범. 베이커리 목적으로 방문 추천.",
+            desc: "정통 비에누아즈리 베이커리. 빵 퀄리티가 높고 매장 분위기 예쁨.",
+            menu: ["British Black Gold Sesame Viennese ★", "크루아상", "밀크 브레드"],
             price: "23위안~",
             mapUrl: "https://uri.amap.com/search?keyword=AMAM+LONBAKERY&city=上海",
             kidsOk: true,
-            review: "베이커리 보러 갔다가 음료까지 마셨는데, 빵은 맛있지만 음료는 평범했어요",
+            review: "빵은 맛있지만 음료는 평범했어요. 베이커리 목적으로 방문 추천",
           },
           {
-            name: "MANNER Coffee 漫咖啡 — 말차 치즈 라떼",
-            desc: "말차 치즈 라떼 25위안. 가성비 카페로 유명. 지점 많고 회전 빠름.",
-            price: "25위안",
+            name: "MANNER Coffee 漫咖啡",
+            desc: "현지 직장인들이 즐겨 찾는 가성비 커피 브랜드. 지점이 많아 접근성 최고.",
+            menu: ["말차 치즈 라떼 ★", "아메리카노", "라떼"],
+            price: "25위안~",
             mapUrl: "https://uri.amap.com/search?keyword=Manner咖啡&city=上海",
             kidsOk: true,
-            review: "가성비가 좋아서 완전 맛있어~~!! 할 정도는 아니었어요. 가볍게 들르기 좋은 곳",
+            review: "가성비는 좋은데 엄청 맛있다! 할 정도는 아님. 가볍게 들르기 좋은 곳",
           },
           {
-            name: "LV Café",
-            desc: "사진맛집, 럭셔리 감성. 아이와는 짧게 들르기 추천.",
+            name: "LV Café 路易威登",
+            desc: "루이비통 플래그십 내 카페. 사진 맛집, 럭셔리 감성 체험.",
+            menu: ["시그니처 라떼", "LV 케이크"],
             mapUrl: "https://uri.amap.com/search?keyword=LV路易威登咖啡&city=上海",
           },
           {
             name: "% Arabica",
-            desc: "커피 맛·동선 안정. 아이 동반도 부담 적음.",
+            desc: "일본 감성 스페셜티 커피. 원두 품질 높고 공간도 세련됨.",
+            menu: ["핸드드립", "카푸치노", "라떼"],
             mapUrl: "https://uri.amap.com/search?keyword=%25+Arabica+上海&city=上海",
             kidsOk: true,
           },
           {
             name: "Peninsula Lobby 半岛酒店",
-            desc: "와이탄 럭셔리 티타임. 가격대 있지만 부모 만족도 높음.",
+            desc: "와이탄 뷰 럭셔리 애프터눈 티. 가격대 있지만 분위기가 압도적.",
+            menu: ["애프터눈 티 세트 ★", "스콘 & 클로티드 크림", "샴페인"],
             mapUrl: "https://uri.amap.com/search?keyword=半岛酒店大堂&city=上海",
           },
         ],
@@ -275,7 +271,8 @@ const DAYS = [
         options: [
           {
             name: "점도덕 点都德",
-            desc: "홍미창펀·딤섬·오이무침. 아이 동반 만족도 높음.",
+            desc: "광동식 딤섬 전문점. 아이들이 좋아하는 메뉴가 많고 가성비 좋음.",
+            menu: ["새우 창펀 (虾肠粉) ★", "홍미 창펀", "하가우", "오이무침", "에그타르트"],
             mapUrl: "https://uri.amap.com/search?keyword=点都德&city=上海",
             dianpingUrl: "https://www.dianping.com/search/keyword/2/0/%E7%82%B9%E5%BA%A6%E5%BE%B7",
             kidsOk: true,
@@ -283,7 +280,8 @@ const DAYS = [
           },
           {
             name: "Jia Jia Tang Bao 佳家汤包",
-            desc: "샤오롱바오 유명. 대기 가능성 있으나 상해 대표 맛.",
+            desc: "상해 현지인이 인정하는 샤오롱바오 맛집. 육즙이 터지는 정통 탕포.",
+            menu: ["게살 샤오롱바오 (蟹粉小笼) ★", "돼지고기 샤오롱바오", "생강 간장 소스 필수"],
             mapUrl: "https://uri.amap.com/search?keyword=佳家汤包&city=上海",
             waiting: "길 수 있음",
           },
@@ -296,23 +294,26 @@ const DAYS = [
         title: "예원 주변 길거리 간식",
         options: [
           {
-            name: "아마수작 亚麻手作 — 우유 아이스크림",
-            desc: "쌀모찌 음료(29위안)보다 우유 아이스크림(15위안)이 핵심! 직접 주문·결제만 가능, 테이스트 서비스도 있으니 먹어보고 결정.",
-            price: "아이스크림 15위안",
+            name: "아마수작 亚麻手作",
+            desc: "직접 만드는 수제 유제품 디저트. 우유 아이스크림이 진짜 핵심 메뉴.",
+            menu: ["우유 아이스크림 ★ (15위안)", "쌀모찌 음료 (29위안)", "청포도 스무디"],
+            price: "15위안~",
             mapUrl: "https://uri.amap.com/search?keyword=亚麻手作&city=上海",
             kidsOk: true,
-            review: "일반적인 우유 맛이 아니라 완전 진해서 치즈처럼 느껴질 정도. 청포도 스무디도 시원하니 맛있음 추천",
+            review: "우유 맛이 완전 진해서 치즈처럼 느껴질 정도. 직접 주문·결제만 가능, 테이스트 서비스 있으니 먹어보고 결정. 청포도 스무디도 추천",
           },
           {
             name: "팡팡수제모찌 胖胖手工麻薯",
-            desc: "예원 주변 모찌 간식. 먹킷리스트 추천 픽.",
+            desc: "쫄깃한 수제 모찌. 다양한 속재료가 있어 아이들 간식으로 딱.",
+            menu: ["말차 모찌 ★", "딸기 모찌", "흑임자 모찌", "망고 모찌"],
             mapUrl: "https://uri.amap.com/search?keyword=胖胖手工麻薯&city=上海",
             kidsOk: true,
             review: "먹킷리스트 추천 픽",
           },
           {
-            name: "과일가게 誉家利果业 Yujiali Fruit",
-            desc: "신선한 현지 과일 가게. 먹킷리스트 추천.",
+            name: "과일가게 誉家利果业",
+            desc: "신선한 제철 과일 전문점. 컵 과일로 바로 먹을 수 있게 손질해줌.",
+            menu: ["망고 컵과일 ★", "용안", "제철 과일 모둠"],
             mapUrl: "https://uri.amap.com/search?keyword=誉家利果业&city=上海",
             kidsOk: true,
             review: "먹킷리스트 추천 픽",
@@ -327,24 +328,27 @@ const DAYS = [
         desc: "컨디션 좋으면 감성 카페, 피곤하면 테이크아웃 후 호텔 휴식. 체력 아끼는 게 핵심.",
         options: [
           {
-            name: "Alila Shanghai",
-            desc: "호텔 감성 카페. 차분하고 럭셔리한 오후.",
-            mapUrl: "https://uri.amap.com/search?keyword=安麓上海&city=上海",
-          },
-          {
-            name: "스타벅스 — 로즈 말차 라떼",
-            desc: "로즈 말차 라떼 32위안. 장미향 가득해서 마음에 들었던 음료. 말차 느낌은 약하지만 충분히 좋음.",
+            name: "스타벅스 星巴克 — 로즈 말차 라떼",
+            desc: "중국 한정 메뉴. 장미향이 강해서 특색 있는 음료.",
+            menu: ["로즈 말차 라떼 ★ (32위안)", "티바나 샤켄 티", "차이 티 라떼"],
             price: "32위안",
             mapUrl: "https://uri.amap.com/search?keyword=星巴克&city=上海",
             kidsOk: true,
-            review: "장미향 가득해서 마음에 들었던 음료. 약간 아쉬움이 있지만 충분히 좋았던 음료",
+            review: "장미향 가득해서 마음에 들었던 음료. 말차 느낌은 약하지만 충분히 좋음",
           },
           {
-            name: "Luckin Coffee 瑞幸咖啡 — 버터커피",
-            desc: "버터커피가 인기 메뉴. 프랜차이즈라 어디서든 볼 수 있어서 접근성 최고.",
+            name: "Alila Shanghai 安麓",
+            desc: "부티크 호텔 로비 카페. 조용하고 공간이 아름다워 오후 휴식에 최적.",
+            menu: ["시그니처 라떼", "애프터눈 티 세트"],
+            mapUrl: "https://uri.amap.com/search?keyword=安麓上海&city=上海",
+          },
+          {
+            name: "Luckin Coffee 瑞幸咖啡",
+            desc: "중국 최대 커피 체인. 앱으로 미리 주문하면 바로 픽업 가능해 편리.",
+            menu: ["버터커피 (生椰拿铁)", "코코넛 라떼 ★", "아메리카노"],
             mapUrl: "https://uri.amap.com/search?keyword=瑞幸咖啡&city=上海",
             kidsOk: true,
-            review: "버터 커피가 인기 메뉴라길래 먹어봤는데, 제 입맛엔 별로였어요. 접근성은 최고",
+            review: "버터커피는 제 입맛엔 별로. 코코넛 라떼가 더 낫다는 후기가 많음. 접근성은 최고",
           },
         ],
       },
@@ -357,14 +361,16 @@ const DAYS = [
         options: [
           {
             name: "Xiao Dadong 小大董",
-            desc: "대동 계열. 가격 합리적이고 한국인 후기 많음. 인민광장/난징서루 지점 동선 좋음.",
+            desc: "가성비 베이징덕 체인. 대동 계열 중 가격이 합리적이고 한국인 후기 많음.",
+            menu: ["베이징덕 (北京烤鸭) ★", "오리 오이무침", "오리뼈 수프", "빠삭한 오리 껍질"],
             mapUrl: "https://uri.amap.com/search?keyword=小大董&city=上海",
             dianpingUrl: "https://www.dianping.com/search/keyword/2/0/%E5%B0%8F%E5%A4%A7%E8%91%A3",
             kidsOk: true,
           },
           {
             name: "Quanjude 全聚德",
-            desc: "베이징덕 원조급 체인. 관광객 친화적이고 가격대 예측 가능. 전통 체인 느낌.",
+            desc: "1864년 창업 베이징덕 원조 체인. 전통 방식 그대로의 숯불 오리구이.",
+            menu: ["전통 베이징덕 ★", "오리 간 볶음", "오리뼈 탕", "춘권"],
             mapUrl: "https://uri.amap.com/search?keyword=全聚德&city=上海",
             dianpingUrl: "https://www.dianping.com/search/keyword/2/0/%E5%85%A8%E8%81%9A%E5%BE%B7",
             kidsOk: true,
@@ -405,12 +411,13 @@ const DAYS = [
         time: "간식",
         type: "cafe",
         label: "Disney Snack",
-        title: "디즈니 내 음료 & 간식",
+        title: "디즈니 내 먹거리",
         options: [
           {
             name: "아마수작 亚麻手作 (디즈니점)",
-            desc: "디즈니 내 아마수작 지점. 우유 아이스크림 필수. 직접 주문·결제만 가능.",
-            price: "15위안",
+            desc: "디즈니 내 지점. 예원에서 못 먹었다면 여기서.",
+            menu: ["우유 아이스크림 ★ (15위안)", "청포도 스무디"],
+            price: "15위안~",
             mapUrl: "https://uri.amap.com/search?keyword=上海迪士尼乐园&city=上海",
             kidsOk: true,
             review: "먹킷리스트 추천 픽 — 디즈니 안에도 있으니 꼭 들를 것",
@@ -422,9 +429,15 @@ const DAYS = [
         type: "food",
         label: "Delivery",
         title: "마라반 배달",
-        desc: "디즈니 후엔 부모 체력 방전 가능성이 높으니 호텔 복귀 후 마라탕/볶음류 배달 추천.",
-        links: [
-          { label: "마라반 검색", url: "https://uri.amap.com/search?keyword=麻辣烫&city=上海" },
+        desc: "디즈니 후엔 부모 체력 방전. 호텔 복귀 후 Meituan/Eleme 앱으로 배달 주문.",
+        options: [
+          {
+            name: "마라반 麻辣烫",
+            desc: "재료를 골라 무게로 계산하는 마라탕 스타일. 꼬치·채소·면 등 취향껏 선택.",
+            menu: ["소고기 꼬치", "버섯류", "두부 피", "당면", "우동면"],
+            mapUrl: "https://uri.amap.com/search?keyword=麻辣烫&city=上海",
+            kidsOk: true,
+          },
         ],
       },
     ],
@@ -457,14 +470,16 @@ const DAYS = [
         options: [
           {
             name: "좌정우원 左庭右院",
-            desc: "토마토탕/백탕/약한 마라. 깔끔한 훠궈 후보.",
+            desc: "깔끔한 탕 베이스의 훠궈. 마라 자극 없이 아이와 함께 먹기 좋음.",
+            menu: ["토마토탕 ★", "백탕 (白湯)", "양고기", "새우", "두부", "버섯 모둠"],
             mapUrl: "https://uri.amap.com/search?keyword=左庭右院火锅&city=上海",
             dianpingUrl: "https://www.dianping.com/search/keyword/2/0/%E5%B7%A6%E5%BA%AD%E5%8F%B3%E8%8B%91",
             kidsOk: true,
           },
           {
             name: "Haidilao 海底捞",
-            desc: "아이 친화·서비스 최고·실패 확률 낮음. 마지막날 안전픽.",
+            desc: "서비스가 압도적인 훠궈 체인. 아이들 위해 면 뽑기 쇼도 해줌.",
+            menu: ["마라탕", "버섯탕 ★", "USDA 소고기", "새우 완자", "스무디"],
             mapUrl: "https://uri.amap.com/search?keyword=海底捞火锅&city=上海",
             dianpingUrl: "https://www.dianping.com/search/keyword/2/0/%E6%B5%B7%E5%BA%95%E6%8D%9E",
             kidsOk: true,

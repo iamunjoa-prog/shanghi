@@ -146,26 +146,29 @@
 
     /* ── Timeline ── */
     .timeline { display: flex; flex-direction: column; gap: 14px; }
-    .timeline-item { display: flex; gap: 16px; align-items: flex-start; }
+    .timeline-item { display: flex; gap: 12px; align-items: flex-start; }
     .time {
-      flex-shrink: 0; width: 52px;
-      font-size: 12px; font-weight: 700;
+      flex-shrink: 0; width: 44px;
+      font-size: 11px; font-weight: 700;
       color: var(--muted); text-align: right;
-      padding-top: 18px; letter-spacing: 0.02em;
+      padding-top: 20px; letter-spacing: 0.02em;
+    }
+    @media (max-width: 640px) {
+      .time { width: 36px; font-size: 10px; }
     }
 
     /* ── Card ── */
     .card {
-      flex: 1;
+      flex: 1; min-width: 0;  /* flex 자식이 overflow 안 되도록 */
       background: var(--card);
       backdrop-filter: blur(16px);
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      padding: 18px 20px;
+      padding: 16px 18px;
       box-shadow: var(--shadow);
     }
-    .card h3 { margin: 6px 0 8px; font-size: 17px; font-weight: 700; }
-    .card p { margin: 0 0 12px; font-size: 14px; color: var(--muted); line-height: 1.55; }
+    .card h3 { margin: 6px 0 8px; font-size: 17px; font-weight: 700; word-break: keep-all; line-height: 1.3; }
+    .card p { margin: 0 0 12px; font-size: 14px; color: var(--muted); line-height: 1.6; word-break: keep-all; }
     .card ul {
       margin: 8px 0 0; padding: 0;
       list-style: none; display: flex; flex-direction: column; gap: 4px;
@@ -194,19 +197,26 @@
     /* ── Option grid ── */
     .option-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
     .option {
-      display: flex; justify-content: space-between;
-      align-items: flex-start; gap: 12px;
-      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 14px 16px;
       background: rgba(0,0,0,.03);
       border-radius: 16px;
       border: 1px solid var(--line);
     }
-    .option-info { flex: 1; }
-    .option-info strong { font-size: 14px; font-weight: 700; display: block; margin-bottom: 3px; }
-    .option-info .opt-desc { font-size: 13px; color: var(--muted); line-height: 1.45; }
-    .option-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+    .option-info strong {
+      font-size: 15px; font-weight: 700;
+      display: block; margin-bottom: 5px;
+      line-height: 1.3; word-break: keep-all;
+    }
+    .option-info .opt-desc {
+      font-size: 13px; color: var(--muted);
+      line-height: 1.55; word-break: keep-all;
+    }
+    .option-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
     .meta-tag {
-      font-size: 11px; padding: 2px 8px;
+      font-size: 11px; padding: 3px 10px;
       border-radius: 999px; border: 1px solid var(--line);
       color: var(--muted); white-space: nowrap;
     }
@@ -215,33 +225,47 @@
     .meta-tag.price { border-color: rgba(0,113,227,.25); color: var(--accent); background: rgba(0,113,227,.06); }
 
     .opt-review {
-      margin-top: 7px;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.5;
-      padding: 6px 10px;
+      font-size: 12px; color: var(--muted);
+      line-height: 1.55; word-break: keep-all;
+      padding: 7px 11px;
       background: rgba(0,0,0,.03);
       border-radius: 8px;
       border-left: 2px solid rgba(0,0,0,.1);
       font-style: italic;
     }
 
+    /* ── Menu chips ── */
+    .opt-menu {
+      display: flex; flex-wrap: wrap; gap: 5px;
+      margin-top: 8px;
+    }
+    .menu-chip {
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 8px;
+      background: rgba(0,0,0,.05);
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .menu-chip.star {
+      background: rgba(181,71,63,.1);
+      color: var(--food);
+      font-weight: 600;
+    }
+
     /* ── Buttons ── */
-    .buttons { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 4px; flex-shrink: 0; }
+    .buttons { display: flex; flex-wrap: wrap; gap: 7px; }
     .btn {
       display: inline-block;
       font-size: 12px; font-weight: 600;
-      padding: 7px 13px; border-radius: 999px;
+      padding: 8px 15px; border-radius: 999px;
       background: var(--accent); color: #fff;
       white-space: nowrap; transition: .18s;
     }
     .btn:hover { opacity: .85; }
-    .btn.light {
-      background: rgba(0,0,0,.07); color: var(--text);
-    }
-    .btn.dianping {
-      background: rgba(181,71,63,.12); color: var(--food);
-    }
+    button.btn { border: none; cursor: pointer; font-family: inherit; }
+    .btn.light { background: rgba(0,0,0,.07); color: var(--text); }
+    .btn.dianping { background: rgba(181,71,63,.12); color: var(--food); }
 
     /* ── Grid layout ── */
     .grid { display: grid; gap: 16px; }
@@ -345,32 +369,58 @@ function labelClass(type) {
 
 function makeBtns(links) {
   if (!links || !links.length) return "";
-  return `<div class="buttons">${links.map(l =>
-    `<a class="btn ${l.style || ""}" href="${l.url}" target="_blank">${l.label}</a>`
-  ).join("")}</div>`;
+  return `<div class="buttons">${links.map(l => {
+    const isAmap = l.url && l.url.includes("uri.amap.com");
+    if (isAmap) {
+      return `<button class="btn ${l.style || ""}" onclick="openAmap('${l.url}')">${l.label}</button>`;
+    }
+    return `<a class="btn ${l.style || ""}" href="${l.url}" target="_blank">${l.label}</a>`;
+  }).join("")}</div>`;
+}
+
+// ── 고덕지도 앱 오픈 함수 ──
+// iOS/Android에서 고덕지도 앱이 설치돼 있으면 앱으로, 없으면 웹으로 열림
+function openAmap(url) {
+  if (!url) return;
+  // uri.amap.com 딥링크는 앱이 설치된 경우 자동으로 앱 실행
+  // iOS Safari에서는 window.location 방식이 가장 안정적
+  window.location.href = url;
 }
 
 function makeOption(opt) {
   const metaTags = [
-    opt.price  ? `<span class="meta-tag price">💴 ${opt.price}</span>` : "",
-    opt.kidsOk ? `<span class="meta-tag kids-ok">👶 아이 가능</span>` : "",
+    opt.price   ? `<span class="meta-tag price">💴 ${opt.price}</span>` : "",
+    opt.kidsOk  ? `<span class="meta-tag kids-ok">👶 아이 가능</span>` : "",
     opt.waiting ? `<span class="meta-tag waiting">⏱ 웨이팅: ${opt.waiting}</span>` : "",
   ].join("");
 
-  const btns = [
-    opt.mapUrl ? `<a class="btn light" href="${opt.mapUrl}" target="_blank">🗺 고덕지도</a>` : "",
-    opt.dianpingUrl ? `<a class="btn dianping" href="${opt.dianpingUrl}" target="_blank">大众 Dianping</a>` : "",
-  ].join("");
+  // 메뉴 칩 — ★ 포함된 항목은 강조
+  const menuChips = opt.menu && opt.menu.length
+    ? `<div class="opt-menu">${opt.menu.map(m => {
+        const isStar = m.includes("★");
+        const label = m.replace(" ★", "").replace("★ ", "").replace("★", "");
+        return `<span class="menu-chip ${isStar ? "star" : ""}">${isStar ? "★ " : ""}${label}</span>`;
+      }).join("")}</div>`
+    : "";
+
+  // 고덕지도 버튼 — onclick으로 앱 열기
+  const amapBtn = opt.mapUrl
+    ? `<button class="btn light" onclick="openAmap('${opt.mapUrl}')">🗺 고덕지도</button>`
+    : "";
+  const dianpingBtn = opt.dianpingUrl
+    ? `<a class="btn dianping" href="${opt.dianpingUrl}" target="_blank">大众 Dianping</a>`
+    : "";
 
   return `
     <div class="option">
       <div class="option-info">
         <strong>${opt.name}</strong>
         <span class="opt-desc">${opt.desc || ""}</span>
+        ${menuChips}
         ${metaTags ? `<div class="option-meta">${metaTags}</div>` : ""}
         ${opt.review ? `<div class="opt-review">💬 ${opt.review}</div>` : ""}
       </div>
-      ${btns ? `<div class="buttons">${btns}</div>` : ""}
+      ${(amapBtn || dianpingBtn) ? `<div class="buttons">${amapBtn}${dianpingBtn}</div>` : ""}
     </div>`;
 }
 
