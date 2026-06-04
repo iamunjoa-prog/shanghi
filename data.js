@@ -22,14 +22,54 @@ const TRIP_META = {
 };
 
 const APPS = [
-  { icon: "💳", name: "Alipay", desc: "결제, 디디 호출, 미니프로그램 활용. 해외카드 연결 체크." },
-  { icon: "💬", name: "WeChat", desc: "연락, 일부 매장 QR, 위챗페이 보조. 친구와 공유에도 편함." },
-  { icon: "🚕", name: "DiDi", desc: "아이 동반 여행 필수. 호텔·식당 중국어 주소 복붙용으로 준비." },
-  { icon: "🗺️", name: "Amap / 高德地图", desc: "중국 현지 지도. 구글맵보다 정확도 훨씬 높음. 필수 설치." },
-  { icon: "🏰", name: "Shanghai Disney Resort", desc: "대기시간, 쇼 일정, Premier Access, 티켓 연결 확인용." },
-  { icon: "✈️", name: "Trip.com", desc: "호텔/티켓/예약 확인용. 디즈니 티켓 구매 시 앱 연동 확인." },
-  { icon: "🧾", name: "Dianping / 大众点评", desc: "맛집 후기·지점 확인. 중국 현지 인기 매장 체크에 유용." },
-  { icon: "🌐", name: "Papago / 번역앱", desc: "메뉴판·택시·식당 요청용. 오프라인 번역팩 미리 다운로드." },
+  {
+    icon: "💳", name: "Alipay 支付宝",
+    desc: "결제, 디디 호출, 미니프로그램 활용. 해외카드 연결 체크.",
+    ios: "https://apps.apple.com/kr/app/alipay/id333206289",
+    android: "https://play.google.com/store/apps/details?id=com.eg.android.AlipayGphone",
+  },
+  {
+    icon: "💬", name: "WeChat 微信",
+    desc: "연락, 일부 매장 QR, 위챗페이 보조. 친구와 공유에도 편함.",
+    ios: "https://apps.apple.com/kr/app/wechat/id414478124",
+    android: "https://play.google.com/store/apps/details?id=com.tencent.mm",
+  },
+  {
+    icon: "🚕", name: "DiDi 滴滴",
+    desc: "아이 동반 여행 필수. 호텔·식당 중국어 주소 복붙용으로 준비.",
+    ios: "https://apps.apple.com/kr/app/didi-app/id554499054",
+    android: "https://play.google.com/store/apps/details?id=com.sdu.didi.psnger",
+  },
+  {
+    icon: "🗺️", name: "Amap 高德地图",
+    desc: "중국 현지 지도. 구글맵보다 정확도 훨씬 높음. 필수 설치.",
+    ios: "https://apps.apple.com/kr/app/%EA%B3%A0%EB%8D%95%EC%A7%80%EB%8F%84/id461703208",
+    android: "https://play.google.com/store/apps/details?id=com.autonavi.minimap",
+  },
+  {
+    icon: "🏰", name: "Shanghai Disney",
+    desc: "대기시간, 쇼 일정, Premier Access, 티켓 연결 확인용.",
+    ios: "https://apps.apple.com/kr/app/shanghai-disney-resort/id963237569",
+    android: "https://play.google.com/store/apps/details?id=com.disney.shanghaidisneyland.asia",
+  },
+  {
+    icon: "✈️", name: "Trip.com 携程",
+    desc: "호텔/티켓/예약 확인용. 디즈니 티켓 구매 시 앱 연동 확인.",
+    ios: "https://apps.apple.com/kr/app/trip-com-hotels-flights-trains/id681752345",
+    android: "https://play.google.com/store/apps/details?id=ctrip.english",
+  },
+  {
+    icon: "🧾", name: "Dianping 大众点评",
+    desc: "맛집 후기·지점 확인. 중국 현지 인기 매장 체크에 유용.",
+    ios: "https://apps.apple.com/kr/app/%EB%8B%A4%EC%9D%B4%EC%95%88%ED%95%91/id351091731",
+    android: "https://play.google.com/store/apps/details?id=com.dianping.v1",
+  },
+  {
+    icon: "🌐", name: "Papago",
+    desc: "메뉴판·택시·식당 요청용. 오프라인 번역팩 미리 다운로드.",
+    ios: "https://apps.apple.com/kr/app/naver-papago-ai-translator/id1147874819",
+    android: "https://play.google.com/store/apps/details?id=com.naver.labs.translator",
+  },
 ];
 
 const DAYS = [
