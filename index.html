@@ -212,6 +212,19 @@
     }
     .meta-tag.kids-ok { border-color: rgba(95,127,63,.3); color: var(--kids); background: rgba(95,127,63,.07); }
     .meta-tag.waiting { border-color: rgba(181,71,63,.25); color: var(--food); background: rgba(181,71,63,.06); }
+    .meta-tag.price { border-color: rgba(0,113,227,.25); color: var(--accent); background: rgba(0,113,227,.06); }
+
+    .opt-review {
+      margin-top: 7px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      padding: 6px 10px;
+      background: rgba(0,0,0,.03);
+      border-radius: 8px;
+      border-left: 2px solid rgba(0,0,0,.1);
+      font-style: italic;
+    }
 
     /* ── Buttons ── */
     .buttons { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 4px; flex-shrink: 0; }
@@ -339,12 +352,13 @@ function makeBtns(links) {
 
 function makeOption(opt) {
   const metaTags = [
+    opt.price  ? `<span class="meta-tag price">💴 ${opt.price}</span>` : "",
     opt.kidsOk ? `<span class="meta-tag kids-ok">👶 아이 가능</span>` : "",
     opt.waiting ? `<span class="meta-tag waiting">⏱ 웨이팅: ${opt.waiting}</span>` : "",
   ].join("");
 
   const btns = [
-    opt.mapUrl ? `<a class="btn light" href="${opt.mapUrl}" target="_blank">🗺 지도</a>` : "",
+    opt.mapUrl ? `<a class="btn light" href="${opt.mapUrl}" target="_blank">🗺 고덕지도</a>` : "",
     opt.dianpingUrl ? `<a class="btn dianping" href="${opt.dianpingUrl}" target="_blank">大众 Dianping</a>` : "",
   ].join("");
 
@@ -354,6 +368,7 @@ function makeOption(opt) {
         <strong>${opt.name}</strong>
         <span class="opt-desc">${opt.desc || ""}</span>
         ${metaTags ? `<div class="option-meta">${metaTags}</div>` : ""}
+        ${opt.review ? `<div class="opt-review">💬 ${opt.review}</div>` : ""}
       </div>
       ${btns ? `<div class="buttons">${btns}</div>` : ""}
     </div>`;
